@@ -72,7 +72,8 @@ void ofApp::draw(){
 
   ofSetColor(0, 200, 0);
 
-  fbo.begin();  // フレームバッファオブジェクト開始
+  fbo.begin();  // フレームバッファオブジェクト開始 
+                //  (MEMO) iOSで これを使うと，何故かうまくいかない．
   ofClear(0);
 
   //ofSetColor(0, 0, 0);
