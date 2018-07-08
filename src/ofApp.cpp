@@ -7,16 +7,27 @@ void ofApp::setup(){
   //  600x400, 30 frames/sec
   ofSetWindowShape(900, 900);
   // 再生速度を1秒2フレームに設定（初期値は1秒60フレーム）
-  //ofSetFrameRate(20);
+  ofSetFrameRate(15);
   //  set background
   ofSetBackgroundColor(0, 0, 0);
 
+  // ランダムに Cell を配置
+  InitLifeGame();
 
-  // --------------------------------------------------
-  // Initialize Cell Matrix
-  // --------------------------------------------------
-  std::random_device rnd;     // 非決定的な乱数生成器
-  std::mt19937 mt(rnd());
+  //
+  fbo.allocate(ofGetWidth(), ofGetHeight()); // フレームバッファオブジェクト
+  
+}
+
+
+//--------------------------------------------------------------
+
+// --------------------------------------------------
+// ランダムに Cell を配置
+// --------------------------------------------------
+void ofApp::InitLifeGame(){
+  static std::random_device rnd; 
+  static std::mt19937 mt(rnd());
 
   LifeGame::Vec size;
   size = game.GetMatrixSize();
@@ -30,22 +41,33 @@ void ofApp::setup(){
   }
 
 
-  fbo.allocate(ofGetWidth(), ofGetHeight()); // フレームバッファオブジェクト
-
-
 }
 
+// --------------------------------------------------
+// 指定位置(x,y)へ，Box(4x4) 状に，Cell を配置
+// --------------------------------------------------
+void ofApp::DrawBox(const int x, const int y){
+  int xx = x / cellSize + 1;
+  int yy = y / cellSize + 1;
+
+  for(int i = -2; i < 3; i++){
+    for(int j = -2; j < 3; j++){
+      game.On(LifeGame::Vec(i + xx, j + yy));
+    }
+  }
+  }
+
+
+
+
+//--------------------------------------------------------------
 //--------------------------------------------------------------
 void ofApp::update(){
-  game.Update();
-
+  if( !flgSTOP ) game.Update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-  
-  const int padding = 3;
-  
   LifeGame::Vec size = game.GetMatrixSize();
 
   ofSetColor(0, 200, 0);
@@ -67,10 +89,10 @@ void ofApp::draw(){
       else                               ofSetColor(0, 0, 0);
 
       ofDrawRectangle(
-        x * padding,
-        y * padding,
-        (x + 1) * padding,
-        (y + 1) * padding);
+        x * cellSize,
+        y * cellSize,
+        (x + 1) * cellSize,
+        (y + 1) * cellSize);
       /**/
 
       /**
@@ -92,6 +114,10 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+  // --------------------------------------------------
+  // If Any Key is pressed, Init LifeGame
+  // --------------------------------------------------
+  InitLifeGame();
 }
 
 //--------------------------------------------------------------
@@ -106,16 +132,18 @@ void ofApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-
+  DrawBox(x, y);
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
+  flgSTOP = true; // Stop Updating Game
+  DrawBox(x, y);
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
+  flgSTOP = false; // Restart Updating Game
 
 }
 

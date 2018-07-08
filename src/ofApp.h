@@ -8,6 +8,10 @@ public :
   LifeGame::LifeGame<300,300> game;
   ofFbo fbo; // フレームバッファオブジェクト
 
+  const int cellSize = 3;
+  bool      flgSTOP = false;
+
+
 public:
 		void setup();
 		void update();
@@ -24,5 +28,7 @@ public:
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-		
+
+    void InitLifeGame();
+    void DrawBox(const int x, const int y);
 };
