@@ -1,2 +1,3 @@
 # of_LifeGame
-LifeGame for openFrameworks 
+Simple LifeGame for openFrameworks
+ 
