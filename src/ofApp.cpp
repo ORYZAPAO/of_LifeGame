@@ -74,7 +74,8 @@ void ofApp::draw(){
 
   fbo.begin();  // フレームバッファオブジェクト開始 
                 //  (MEMO) iOSで これを使うと，何故かうまくいかない．
-  ofClear(0);
+  
+  ofClear(0); // Clear
 
   //ofSetColor(0, 0, 0);
   //ofDrawRectangle(0, 0, ofGetWidth() - 1, ofGetHeight() - 1);
@@ -85,7 +86,7 @@ void ofApp::draw(){
     for(size_t x = 1; x <= size.x; x++){
 
       
-      /**/
+      /**
       if(game.Get(LifeGame::Vec(x, y)))  ofSetColor(0, 200, 0);
       else                               ofSetColor(0, 0, 0);
 
@@ -94,17 +95,17 @@ void ofApp::draw(){
         y * cellSize,
         (x + 1) * cellSize,
         (y + 1) * cellSize);
-      /**/
+      **/
 
-      /**
+      /**/
       if(game.Get(LifeGame::Vec(x, y))==true){
         ofDrawRectangle(
-          x * padding,
-          y * padding,
-          (x + 1) * padding,
-          (y + 1) * padding);
+          x * cellSize,
+          y * cellSize,
+          cellSize,
+          cellSize);
       }
-      **/
+      /**/
 
     }
   }
